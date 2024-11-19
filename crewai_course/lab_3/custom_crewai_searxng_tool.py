@@ -1,13 +1,14 @@
 import os
-import requests
 from typing import Type
+
+import requests
 from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 
 
-
 class SearXNGSearchToolInput(BaseModel):
     """Input schema for SearXNGSearchTool."""
+
     search_query: str = Field(..., description="The search query to perform.")
 
 
@@ -20,8 +21,8 @@ class SearXNGSearchTool(BaseTool):
 
     def _run(self, search_query: str) -> str:
         print("Function Inputs:", locals())
-        if 'SEARXNG_BASE_URL' in os.environ:
-            base_url = os.environ['SEARXNG_BASE_URL']
+        if "SEARXNG_BASE_URL" in os.environ:
+            base_url = os.environ["SEARXNG_BASE_URL"]
         else:
             base_url = "http://localhost:8080/search"
 
@@ -29,22 +30,21 @@ class SearXNGSearchTool(BaseTool):
         # if missing_vars:
         #     raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
-        params = {
-            'q': search_query,
-            'format': 'json'
-        }
+        params = {"q": search_query, "format": "json"}
 
         try:
             response = requests.get(base_url, params=params)
             response.raise_for_status()
             # results = response.content
             # print(results)
-            results = response.json().get('results', [])
+            results = response.json().get("results", [])
 
             if not results:
                 return "No results found for the query."
 
-            formatted_results = "\n".join([f"{result['title']} - {result['url']}" for result in results])
+            formatted_results = "\n".join(
+                [f"{result['title']} - {result['url']}" for result in results]
+            )
             return f"Search Results:\n{formatted_results}"
 
         except requests.exceptions.RequestException as e:
