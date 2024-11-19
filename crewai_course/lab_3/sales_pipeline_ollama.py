@@ -50,7 +50,8 @@ class LeadPersonalInfo(BaseModel):
         ...,
         ge=0,
         le=10,
-        description="A score representing how relevant the lead's role is to the decision-making process (0-10).",
+        description="A score representing how relevant the lead's role is to the \
+          decision-making process (0-10).",
     )
     professional_background: Optional[str] = Field(
         ..., description="A brief description of the lead's professional background."

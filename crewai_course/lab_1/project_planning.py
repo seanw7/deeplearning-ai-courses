@@ -1,3 +1,7 @@
+"""This module contains classes and functions for project planning in a crew-based \
+    system. It includes the definition of task estimates, milestones, and the \
+        overall project plan."""
+
 import time
 import warnings
 from typing import List
@@ -13,6 +17,7 @@ warnings.filterwarnings("ignore")
 
 
 def load_env():
+    """Load environment variables from a .env file."""
     _ = load_dotenv(find_dotenv())
 
 
@@ -34,6 +39,11 @@ tasks_config = configs["tasks"]
 
 
 class TaskEstimate(BaseModel):
+    """
+    Represents an estimate for a task, including its name, estimated time in hours,
+    and required resources.
+    """
+
     task_name: str = Field(..., description="Name of the task")
     estimated_time_hours: float = Field(
         ..., description="Estimated time to complete the task in hours"
@@ -44,6 +54,10 @@ class TaskEstimate(BaseModel):
 
 
 class Milestone(BaseModel):
+    """
+    Represents a milestone in the project, including its name and associated tasks.
+    """
+
     milestone_name: str = Field(..., description="Name of the milestone")
     tasks: List[str] = Field(
         ..., description="List of task IDs associated with this milestone"
@@ -51,6 +65,10 @@ class Milestone(BaseModel):
 
 
 class ProjectPlan(BaseModel):
+    """
+    Represents the overall project plan, including a list of tasks and milestones.
+    """
+
     tasks: List[TaskEstimate] = Field(
         ..., description="List of tasks with their estimates"
     )
@@ -118,39 +136,35 @@ crew = Crew(
 project = "Website"
 industry = "Technology"
 project_objectives = "Create a website for a small business"
-team_members = """
-- John Doe (Project Manager)
-- Jane Doe (Software Engineer)
-- Bob Smith (Designer)
-- Alice Johnson (QA Engineer)
-- Tom Brown (QA Engineer)
-"""
-project_requirements = """
-- Create a responsive design that works well on desktop and mobile devices
-- Implement a modern, visually appealing user interface with a clean look
-- Develop a user-friendly navigation system with intuitive menu structure
-- Include an "About Us" page highlighting the company's history and values
-- Design a "Services" page showcasing the business's offerings with descriptions
-- Create a "Contact Us" page with a form and integrated map for communication
-- Implement a blog section for sharing industry news and company updates
-- Ensure fast loading times and optimize for search engines (SEO)
-- Integrate social media links and sharing capabilities
-- Include a testimonials section to showcase customer feedback and build trust
-"""
+team_members = (
+    "- John Doe (Project Manager)\n"
+    "- Jane Doe (Software Engineer)\n"
+    "- Bob Smith (Designer)\n"
+    "- Alice Johnson (QA Engineer)\n"
+    "- Tom Brown (QA Engineer)\n"
+)
+project_requirements = (
+    "- Create a responsive design that works well on desktop and mobile devices\n"
+    "- Implement a modern, visually appealing user interface with a clean look\n"
+    "- Develop a user-friendly navigation system with intuitive menu structure\n"
+    '- Include an "About Us" page highlighting the company\'s history and values\n'
+    '- Design a "Services" page showcasing the business\'s offerings with \
+        descriptions\n'
+    '- Create a "Contact Us" page with a form and integrated map for communication\n'
+    "- Implement a blog section for sharing industry news and company updates\n"
+    "- Ensure fast loading times and optimize for search engines (SEO)\n"
+    "- Integrate social media links and sharing capabilities\n"
+    "- Include a testimonials section to showcase customer feedback and build trust\n"
+)
 
 # Format the dictionary as Markdown for a better display in Jupyter Lab
-formatted_output = f"""
-**Project Type:** {project}
-
-**Project Objectives:** {project_objectives}
-
-**Industry:** {industry}
-
-**Team Members:**
-{team_members}
-**Project Requirements:**
-{project_requirements}
-"""
+formatted_output = (
+    f"**Project Type:** {project}\n\n"
+    f"**Project Objectives:** {project_objectives}\n\n"
+    f"**Industry:** {industry}\n\n"
+    f"**Team Members:**\n{team_members}"
+    f"**Project Requirements:**\n{project_requirements}"
+)
 # Display the formatted output as Markdown
 # print(formatted_output)
 

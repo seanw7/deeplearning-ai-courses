@@ -1,3 +1,7 @@
+"""This module contains classes and functions for generating project progress reports \
+    based on data fetched from a Trello board. It includes tools for fetching board \
+        and card data, as well as agents and tasks for processing this data."""
+
 import json
 import os
 import warnings
@@ -34,6 +38,10 @@ tasks_config = configs["tasks"]
 
 
 class BoardDataFetcherTool(BaseTool):
+    """
+    Fetches card data, comments, and activity from a Trello board.
+    """
+
     name: str = "Trello Board Data Fetcher"
     description: str = "Fetches card data, comments, and activity from a Trello board."
 
@@ -45,7 +53,8 @@ class BoardDataFetcherTool(BaseTool):
         """
         Fetch all cards from the specified Trello board.
         """
-        url = f"{os.getenv('DLAI_TRELLO_BASE_URL', 'https://api.trello.com')}/1/boards/{self.board_id}/cards"
+        base_url = os.getenv("DLAI_TRELLO_BASE_URL", "https://api.trello.com")
+        url = f"{base_url}/1/boards/{self.board_id}/cards"
 
         query = {
             "key": self.api_key,
@@ -133,7 +142,7 @@ class BoardDataFetcherTool(BaseTool):
                                     "id": "65e5093d0ab5ee98592f5983",
                                     "activityBlocked": False,
                                     "avatarHash": "d5500941ebf808e561f9083504877bca",
-                                    "avatarUrl": "https://trello-members.s3.amazonaws.com/65e5093d0ab5ee98592f5983/d5500941ebf808e561f9083504877bca",
+                                    "avatarUrl": "https://trello-members.s3.amazonaws.com/65e5093d0ab5ee98592f5983/d5500941ebf808e561f9083504877bca",  # noqa: E501
                                     "fullName": "Joao Moura",
                                     "idMemberReferrer": None,
                                     "initials": "JM",
@@ -169,6 +178,10 @@ class BoardDataFetcherTool(BaseTool):
 
 
 class CardDataFetcherTool(BaseTool):
+    """
+    Fetches card data from a Trello board.
+    """
+
     name: str = "Trello Card Data Fetcher"
     description: str = "Fetches card data from a Trello board."
 
@@ -176,7 +189,11 @@ class CardDataFetcherTool(BaseTool):
     api_token: str = os.environ["TRELLO_API_TOKEN"]
 
     def _run(self, card_id: str) -> dict:
-        url = f"{os.getenv('DLAI_TRELLO_BASE_URL', 'https://api.trello.com')}/1/cards/{card_id}"
+        """
+        Fetch data for a specific card from the Trello board.
+        """
+        base_url = os.getenv("DLAI_TRELLO_BASE_URL", "https://api.trello.com")
+        url = f"{base_url}/1/cards/{card_id}"
         query = {"key": self.api_key, "token": self.api_token}
         response = requests.get(url, params=query)
 
@@ -186,7 +203,8 @@ class CardDataFetcherTool(BaseTool):
             # Fallback in case of timeouts or other issues
             return json.dumps(
                 {
-                    "error": "Failed to fetch card data, don't try to fetch any trello data anymore"
+                    "error": "Failed to fetch card data, don't try to fetch any \
+                        trello data anymore"
                 }
             )
 

@@ -14,9 +14,8 @@ class SearXNGSearchToolInput(BaseModel):
 
 class SearXNGSearchTool(BaseTool):
     name: str = "SearXNG Search"
-    description: str = "This tool allows CrewAI Agents to perform search queries using the SearXNG server and view the results."
-    # def __init__(self, , base_url: str = "http://localhost:8080/search", format: str = "json"):
-    #     self.base_url
+    description: str = "This tool allows CrewAI Agents to perform search queries \
+        using the SearXNG server and view the results."
     args_schema: Type[BaseModel] = SearXNGSearchToolInput
 
     def _run(self, search_query: str) -> str:
@@ -25,10 +24,6 @@ class SearXNGSearchTool(BaseTool):
             base_url = os.environ["SEARXNG_BASE_URL"]
         else:
             base_url = "http://localhost:8080/search"
-
-        # missing_vars = [var for var in ['SEARXNG_BASE_URL'] if not os.getenv(var)]
-        # if missing_vars:
-        #     raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
         params = {"q": search_query, "format": "json"}
 

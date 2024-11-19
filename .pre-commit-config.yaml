@@ -10,13 +10,13 @@ repos:
       - id: ruff-format
 
 
-  # - repo: https://github.com/pycqa/flake8
-  #   rev: 7.1.1  # pick a git hash / tag to point to
-  #   hooks:
-  #     - id: flake8
-  #       args: [ --max-line-length=88 ]
-  #       additional_dependencies:
-  #         - flake8-docstrings
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1  # pick a git hash / tag to point to
+    hooks:
+      - id: flake8
+        args: [ --max-line-length=88 ]
+        # additional_dependencies:
+        #   - flake8-docstrings
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.13.2  # Use the latest stable version
